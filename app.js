@@ -65,20 +65,25 @@ async function startCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: { 
-                facingMode: currentFacingMode, // ★変数を使っているか？
-                aspectRatio: 4/3 
+                facingMode: currentFacingMode, 
+                aspectRatio: 4/3,
+                
+                // 理想の解像度を指定 (UXGA 1600x1200)
+                // スマホがこの解像度に対応していれば、これが使われる
+                width: { ideal: 1600 },
+                height: { ideal: 1200 }
             }
         });
         
         video.srcObject = stream;
         video.play();
         
-        // 3. 起動したストリームを保存しておく
         currentStream = stream;
 
     } catch (err) {
         console.error("カメラの起動に失敗しました:", err);
-        alert("カメラの利用を許可してください。");
+        // もし高解像度すぎてエラーが出たら、アラートを追加しても良い
+        // alert("高解像度カメラの起動に失敗しました。");
     }
 }
 
