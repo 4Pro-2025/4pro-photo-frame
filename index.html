@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>文化祭 マリオ風カメラ</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <h1>4Pro カメラ</h1>
+
+    <div class="camera-container">
+        <video id="camera-feed" autoplay playsinline></video>
+        <img id="frame-display" src="frame.png" alt="フレーム">
+    </div>
+    <div class="frame-selector">
+        <button class="frame-btn" data-index="0">フレーム1</button>
+        <button class="frame-btn" data-index="1">フレーム2</button>
+        <button class="frame-btn" data-index="2">フレーム3</button>
+        </div>
+
+    <div class="main-controls">
+        
+        <button id="shutter-btn">さつえい！</button>
+        
+        <button id="switch-cam-btn"></button> 
+        
+    </div>
+
+    <canvas id="canvas" style="display: none;"></canvas>
+    
+    <div id="result-modal">
+        <div class="modal-content">
+            <h2>さつえい完了！</h2>
+            <p>画像を長押しして「写真に追加」を選んでね</p>
+            <img id="result-image" src="" alt="撮影結果">
+            <button id="close-btn">とじる</button>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

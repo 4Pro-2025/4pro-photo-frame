@@ -1,0 +1,197 @@
+body {
+    background-color: #5C94FC; 
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    color: white;
+    
+    /* ★★★ ここからレイアウト修正 ★★★ */
+    
+    margin: 0; /* ブラウザのデフォルト余白をリセット */
+    
+    /* (padding-top と padding-bottom は中央揃えのため削除) */
+    /* padding-top: 20px;    */
+    /* padding-bottom: 20px; */
+
+    display: flex;
+    flex-direction: column;   /* 子要素を縦に並べる */
+    justify-content: center;  /* ★縦方向の中央揃え */
+    min-height: 100vh;        /* ★bodyの高さを画面の高さ100%にする */
+    align-items: center;
+}
+
+h1 {
+    font-size: 5rem; /* 3rem = 基準フォントの3倍の大きさ */
+    margin-top: 0;
+    margin-bottom: 10px; /* タイトルとカメラの間の余白 */
+}
+
+.camera-container {
+    position: relative; /* 重ねるための基準 */
+    width: 95%; /* 画面幅の100% */
+    /*max-width: 500px; /* 最大幅を指定 */
+    
+    /* ★ポイント：アスペクト比を「縦4:横3」に固定 */
+    aspect-ratio: 3 / 4; 
+    
+    margin: 0 auto;/*変更：上下の余白(20px)を削除し、左右のautoのみにする*/
+    
+    margin: 20px auto;
+    border: 10px solid #E70012; /*赤色*/
+    border-radius: 10px;
+    overflow: hidden; /* はみ出た部分を隠す */
+}
+
+/* カメラ映像 */
+#camera-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 4:3の枠いっぱいに映像を広げる */
+    
+    /* ★追加：重ね順を 1（一番下）にする */
+    position: relative;
+    z-index: 1;
+}
+
+/* フレーム画像 */
+#frame-display {
+    position: absolute; /* 映像に重ねる */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* ユーザーがフレームをクリックできないようにする */
+    pointer-events: none; 
+    /* ★追加：重ね順を 2（カメラの上）にする */
+    z-index: 2;
+}
+
+/* シャッターボタンのデザイン */
+#shutter-btn {
+    
+    /*追加：カメラとボタンの間に0pxの余白*/
+    margin-top: 0px;
+
+    padding: 35px 60px;
+    font-size: 55px;
+    font-weight: bold;
+    color: #783c00; /* 茶色 */
+    background-color: #FBD000; /* 黄色いブロック風 */
+    border: 5px solid #783c00;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+#shutter-btn:active {
+    transform: scale(0.9); /* 押した感じを出す */
+}
+
+/* モーダル（ポップアップ）のデザイン */
+#result-modal {
+    display: none; /* JSで 'flex' に変更して表示する */
+    position: fixed; /* 画面全体を覆う */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* 半透明の黒い背景 */
+    z-index: 100;
+    
+    /* 中身を中央揃えにする */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 90%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* ポップアップ内の画像 */
+#result-image {
+    width: 100%;
+    /* アスペクト比を 3:4 に（カメラと同じ） */
+    aspect-ratio: 3 / 4;
+    object-fit: contain; /* 画像全体が収まるように */
+    border: 2px solid #ccc;
+    margin-top: 10px;
+}
+
+#close-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #5C94FC; /* マリオの空の色 */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.frame-selector {
+    /* ボタンを横に並べる */
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* ボタン同士の間隔 */
+    margin-bottom: 15px; /* シャッターボタンとの間隔 */
+}
+
+.frame-btn {
+    padding: 10px 15px;
+    font-size: 50px;
+    font-weight: bold;
+    color: #783c00;
+    background-color: #FBD000; /* シャッターボタンの色に合わせる */
+    border: 3px solid #783c00;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* メイン操作エリア (撮影 + 切替) */
+.main-controls {
+    display: flex;
+    justify-content: center; /* 撮影ボタンを中央に */
+    align-items: center;     /* 縦位置を揃える */
+    margin-top: 15px; /* フレーム選択ボタンとの間隔 */
+
+    position: relative; /* これを基準に配置する */
+    width: 100%;        /* 基準の幅を画面いっぱいにする */
+}
+
+#switch-cam-btn {
+    /* ★サイズを大きくする (120px はOK) */
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; 
+    
+    /* (↓ margin-left: 80px; ← この行は削除する) */
+    
+    /* ★色を他のボタンと合わせる (OK) */
+    background-color: #FBD000; 
+    border: 5px solid #783c00;  
+    
+    background-image: url('change_logo.png'); /* あなたのファイル名に変更 */
+    background-size: 80%; /* アイコンの大きさをボタンの60%に */
+    background-repeat: no-repeat;  /* 画像を繰り返さない */
+    background-position: center;   /* 画像を中央に配置 */
+
+    padding: 0; 
+    cursor: pointer;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* ★★★ 以下3行を追加 ★★★ */
+    position: absolute; /* 親(main-controls)を基準に絶対配置 */
+    right: 10%;         /* 画面の右端から 5% の位置に配置 (この%を調整) */
+    top: 50%;
+    transform: translateY(-50%); /* 縦方向の中央揃え */
+}
+
