@@ -120,10 +120,7 @@ shutterBtn.addEventListener('click', () => {
     // 4. canvasの状態を元に戻す (反転を解除)
     // ※ これをしないと、次に描画するフレームまで反転してしまう
     ctx.restore();
-
-
-
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
     ctx.drawImage(frameImages[currentFrameIndex], 0, 0, canvas.width, canvas.height);
 
     // --- 2-4. 合成した画像をポップアップで表示 ---
