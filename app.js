@@ -102,6 +102,27 @@ shutterBtn.addEventListener('click', () => {
     // canvasに映像とフレームを描画
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
+
+    // 1. 現在のcanvasの状態を一時保存する
+    ctx.save();
+    
+    // 2. もし内カメ('user')なら、canvas自体を左右反転させる
+    if (currentFacingMode === 'user') {
+        ctx.scale(-1, 1); // 左右反転
+        ctx.translate(-canvas.width, 0); // 反転した分、描画位置を戻す
+    }
+    
+    // 3. (反転またはそのままの)canvasにカメラ映像を描画
+    // ※ videoはプレビューで反転しているが、元の映像は反転していない
+    // 　そのため、canvas側を反転させてから描画する
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    // 4. canvasの状態を元に戻す (反転を解除)
+    // ※ これをしないと、次に描画するフレームまで反転してしまう
+    ctx.restore();
+
+
+
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     ctx.drawImage(frameImages[currentFrameIndex], 0, 0, canvas.width, canvas.height);
 
