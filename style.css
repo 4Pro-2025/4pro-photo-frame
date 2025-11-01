@@ -111,6 +111,17 @@ h1 {
     max-width: 90%;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
+/* ポップアップ内の見出し「さつえい完了！」 */
+.modal-content h2 {
+    font-size: 28px; /* (例：大きさを指定) */
+    margin-top: 0;
+}
+
+/* ポップアップ内の説明文「画像を長押しして...」 */
+.modal-content p {
+    font-size: 20px;  /* (例：大きさを指定) */
+    line-height: 1.5; /* 行間を少し空ける */
+}
 
 /* ポップアップ内の画像 */
 #result-image {
@@ -124,8 +135,8 @@ h1 {
 
 #close-btn {
     margin-top: 15px;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 20px 40px;
+    font-size: 24px;
     font-weight: bold;
     color: white;
     background-color: #5C94FC; /* マリオの空の色 */
