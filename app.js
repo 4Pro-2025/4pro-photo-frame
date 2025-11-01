@@ -80,6 +80,15 @@ async function startCamera() {
         
         currentStream = stream;
 
+        // CSSで映像の左右反転を切り替える
+        if (currentFacingMode === 'user') {
+            // 内カメの時：左右反転（ミラー）する
+            video.style.transform = 'scaleX(-1)';
+        } else {
+            // 外カメの時：反転を解除する
+            video.style.transform = 'scaleX(1)';
+        }
+
     } catch (err) {
         console.error("カメラの起動に失敗しました:", err);
         // もし高解像度すぎてエラーが出たら、アラートを追加しても良い
